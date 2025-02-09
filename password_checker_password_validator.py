@@ -83,3 +83,15 @@ def username_validator(func):
         # Если все хорошо, вызываем оригинальную функцию
         return func(*args, **kwargs)
     return wrapper
+
+import csv
+
+@username_validator
+@password_validator(min_length=8, min_uppercase=1, min_lowercase=1, min_special_chars=1)
+def register_user(username, password):
+    # Запись данных в CSV файл
+    with open('users.csv', mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([username, password])
+    
+    return "Пользователь успешно зарегистрирован!"
