@@ -95,3 +95,10 @@ def register_user(username, password):
         writer.writerow([username, password])
     
     return "Пользователь успешно зарегистрирован!"
+
+try:
+    print(register_user("john_doe", "Password1!"))  # Успешная регистрация
+    print(register_user("jane doe", "Password1!"))  # Ошибка: пробел в имени пользователя
+    print(register_user("alice", "pass"))          # Ошибка: короткий пароль
+except ValueError as e:
+    print(f"Ошибка: {e}")
