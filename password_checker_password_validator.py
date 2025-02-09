@@ -24,3 +24,11 @@ def password_checker(func):
 def register_user(password):
     return "Пользователь успешно зарегистрирован!"
 
+# Тестовые случаи
+print(register_user("Password1!"))  # Должен быть успешным
+print(register_user("pass"))        # Слишком короткий
+print(register_user("password123")) # Нет заглавной буквы
+print(register_user("PASSWORD1!")) # Нет строчной буквы
+print(register_user("Passw0rd"))   # Нет специального символа
+print(register_user("Pass1!"))     # Меньше 8 символов
+
