@@ -20,6 +20,10 @@ def password_checker(func):
     
     return wrapper
 
+# **Функция `register_user`**
+	# - **Аргументы**: Принимает пароль в качестве аргумента.
+	# - **Возвращаемое значение**: Сообщение об успешной регистрации, если пароль прошел проверку, или сообщение об ошибке в противном случае.
+	# - **Применение декоратора**: Используйте `@password_checker` для автоматической проверки пароля. 
 @password_checker
 def register_user(password):
     return "Пользователь успешно зарегистрирован!"
@@ -32,3 +36,39 @@ print(register_user("PASSWORD1!")) # Нет строчной буквы
 print(register_user("Passw0rd"))   # Нет специального символа
 print(register_user("Pass1!"))     # Меньше 8 символов
 
+import re
+
+def password_validator(min_length=8, min_uppercase=1, min_lowercase=1, min_special_chars=1):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            password = kwargs.get('password') or args[1]  # Получаем пароль из аргументов
+            
+            errors = []
+
+            # Проверка минимальной длины
+            if len(password) < min_length:
+                errors.append(f"Пароль должен содержать минимум {min_length} символов.")
+
+            # Проверка наличия заглавных букв
+            uppercase_count = len(re.findall(r'[A-Z]', password))
+            if uppercase_count < min_uppercase:
+                errors.append(f"Пароль должен содержать минимум {min_uppercase} заглавную букву(вы).")
+
+            # Проверка наличия строчных букв
+            lowercase_count = len(re.findall(r'[a-z]', password))
+            if lowercase_count < min_lowercase:
+                errors.append(f"Пароль должен содержать минимум {min_lowercase} строчную букву(вы).")
+
+            # Проверка наличия специальных символов
+            special_char_count = len(re.findall(r'[!@#$%^&*(),.?":{}|<>]', password))
+            if special_char_count < min_special_chars:
+                errors.append(f"Пароль должен содержать минимум {min_special_chars} специальный символ(ы).")
+
+            # Если есть ошибки, выбрасываем ValueError
+            if errors:
+                raise ValueError("\n".join(errors))
+
+            # Если все хорошо, вызываем оригинальную функцию
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
