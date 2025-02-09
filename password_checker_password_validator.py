@@ -72,3 +72,14 @@ def password_validator(min_length=8, min_uppercase=1, min_lowercase=1, min_speci
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+def username_validator(func):
+    def wrapper(*args, **kwargs):
+        username = kwargs.get('username') or args[0]  # Получаем имя пользователя из аргументов
+        
+        if ' ' in username:
+            raise ValueError("Имя пользователя не должно содержать пробелы.")
+        
+        # Если все хорошо, вызываем оригинальную функцию
+        return func(*args, **kwargs)
+    return wrapper
