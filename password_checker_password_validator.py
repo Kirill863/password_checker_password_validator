@@ -19,3 +19,8 @@ def password_checker(func):
         return func(password)
     
     return wrapper
+
+@password_checker
+def register_user(password):
+    return "Пользователь успешно зарегистрирован!"
+
