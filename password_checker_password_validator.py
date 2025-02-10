@@ -12,7 +12,8 @@ def password_validator(
 ) -> Callable:
     def decorator(func: Callable) -> Callable:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            password: str = kwargs.get('password') or args[1]  # Получаем пароль из аргументов
+            # Получаем пароль из аргументов
+            password: str = kwargs.get('password') or args[1]  # type: ignore
             
             errors: list[str] = []
 
@@ -48,7 +49,8 @@ def password_validator(
 # Декоратор username_validator с аннотациями типов
 def username_validator(func: Callable) -> Callable:
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        username: str = kwargs.get('username') or args[0]  # Получаем имя пользователя из аргументов
+        # Получаем имя пользователя из аргументов
+        username: str = kwargs.get('username') or args[0]  # type: ignore
         
         if ' ' in username:
             raise ValueError("Имя пользователя не должно содержать пробелы.")
